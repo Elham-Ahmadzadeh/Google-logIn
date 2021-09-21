@@ -38,6 +38,7 @@ export default function App() {
     return {
       signOut: () => {
         setIsLoading(false);
+        setStoredCredentials(null);
       },
     };
   });

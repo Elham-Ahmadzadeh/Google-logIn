@@ -3,17 +3,15 @@ import { StyleSheet, View } from "react-native";
 import { Button, Headline } from "react-native-paper";
 import { CredentialContext } from "../context/CredentialContext";
 import * as Google from "expo-google-app-auth";
-import { AuthContext } from "../context/AuthContext";
+import { IOSCLIENTID, ANDROIDCLIENTID } from "@env";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function LoginForm() {
   const { storedCredentials, setStoredCredentials } =
     React.useContext(CredentialContext);
-
   const [message, setMessage] = React.useState();
   const [messageType, setMessageType] = React.useState();
   const [googleSubmitting, setGoogleSubmitting] = React.useState(false);
-
 
   const persistLogin = (credentials, message, status) => {
     AsyncStorage.setItem("frida", JSON.stringify(credentials))
@@ -35,24 +33,22 @@ export default function LoginForm() {
   const handleGoogleSignin = () => {
     setGoogleSubmitting(true);
     const config = {
-      iosClientId: `276122307447-n88eahk858mrkmulalcu20rdisffsubu.apps.googleusercontent.com`,
-      androidClientId: `276122307447-f2svjd1mhjerdfoc1iqc02dqp9ric5hc.apps.googleusercontent.com`,
+      iosClientId: IOSCLIENTID,
+      androidClientId: ANDROIDCLIENTID,
       scopes: ["profile", "email"],
-    
     };
-  
+
     Google.logInAsync(config)
       .then((result) => {
         const { type, user } = result;
         if (type == "success") {
           const { email, name, photoUrl } = user;
-        
+
           persistLogin(
             { email, name, photoUrl },
             "Google signin successful",
             "SUCCESS"
           );
-        
         } else {
           handleMessage("Google Signin was cancelled");
         }
