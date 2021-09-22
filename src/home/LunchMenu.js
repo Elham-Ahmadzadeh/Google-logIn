@@ -10,7 +10,6 @@ export default function LunchMenu() {
 
   return (
     <SafeAreaView>
-      {<Text>{console.log(lunch)}</Text>}
       <Card style={style.container}>
         <Card.Title title="Dagens lunchmeny" />
       </Card>
